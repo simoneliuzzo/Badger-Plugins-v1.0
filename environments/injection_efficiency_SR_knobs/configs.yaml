@@ -1,8 +1,9 @@
 ---
-name: esrf
+name: injection_efficiency_SR_knobs
 version: "0.1"
 dependencies:
   - numpy
   - badger-opt
+  - tango
 interface:
-  - tango_ctrm
+  - tango

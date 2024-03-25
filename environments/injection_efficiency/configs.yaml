@@ -1,5 +1,5 @@
 ---
-name: inj_eff
+name: injection_efficiency
 version: "0.1"
 dependencies:
   - numpy

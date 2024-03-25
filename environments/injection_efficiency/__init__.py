@@ -19,7 +19,7 @@ treflite = tango.DeviceProxy('srdiag/trefflite/sy-sr')
 
 class Environment(environment.Environment):
 
-    name = 'inj_eff'
+    name = 'injection_efficiency'
 
     variables = {'tl2/ps/qf1/Current': [51.0 -5, 51.0 +5],    # quadruoples
                  'tl2/ps/qd2/Current': [30.0 -5, 30.0 +5],
