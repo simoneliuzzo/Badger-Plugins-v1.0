@@ -1,0 +1,10 @@
+---
+name: inj_eff
+version: "0.1"
+dependencies:
+  - numpy
+  - badger-opt
+  - tango
+  - ringcontrol
+interface:
+  - tango
