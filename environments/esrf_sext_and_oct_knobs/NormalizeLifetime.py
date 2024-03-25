@@ -1,9 +1,7 @@
 import math
 from at.acceptance.touschek import get_bunch_length_espread
 
-
 __author__ = 'S.M.Liuzzo'
-
 
 def normalize_lifetime(lt_tot,
                        lt_single,

@@ -1,12 +1,11 @@
 import time
 import numpy as np
 from badger import environment
-# from badger.interface import Interface
 import pathlib
 from statistics import mean
 from itertools import compress
 from badger.errors import BadgerNoInterfaceError, BadgerEnvObsError
-# from .NormalizeLifetime import normalize_lifetime
+from .NormalizeLifetime import normalize_lifetime
 
 
 class Knobs:
@@ -48,71 +47,22 @@ class Environment(environment.Environment):
     for _d in (_limits_knobs_sext, _limits_knobs_oct):
         variables.update(_d)
 
+    observables = ['total_losses', 'libera_lifetime', 'normalized_libera_lifetime']
+
     # initial values for variables
     _variables = {v: 0.0 for v in variables.keys()}
-
-    observables = ['total_losses', 'libera_lifetime', 'normalized_libera_lifetime']
+    _initial_sext = None
+    _initial_oct = None
+    _cur_0 = None
 
     # Environment parameters
     waiting_time: int = 8
     number_of_acquisitions: int = 2
     seconds_between_acquisitions: int = 2
 
-    # print variable limits and present variable values
-    # print(variables)
-    # print(_variables)
-    #[print(f'{k} : {variables[k]}') for k in variables.keys()]
-    #[print(f'{k} : {_variables[k]}') for k in _variables.keys()]
-
-    _initial_sext = None
-    _initial_oct = None
-    _cur_0 = None
-
-    """ test use interface directly
-    interface = Interface()
-    
-    _initial_sext = interface.get_value(channel_name='srmag/m-s/all/CorrectionStrengths')
-    _initial_oct = interface.get_value(channel_name='srmag/m-o/all/CorrectionStrengths')
-    _cur_0 = interface.get_value(channel_name='srdiag/beam-current/total/Current')
-    """
-
-    """ test init without interface
-
-    _initial_sext = None
-    _initial_oct = None
-    _cur_0 = None
-
-    def __init__(self, params):
-        super().__init__( params)
-        
-        assert self.interface, 'Must provide an interface!'
-        
-        self._initial_sext = self.interface.get_value(channel_name='srmag/m-s/all/CorrectionStrengths')
-        self._initial_oct = self.interface.get_value(channel_name='srmag/m-o/all/CorrectionStrengths')
-        self._cur_0 = self.interface.get_value(channel_name='srdiag/beam-current/total/Current')
-    """
-
-    """ test init with interface
-    _initial_sext = []
-    _initial_oct = []
-    _cur_0 = []
-    
-    def __init__(self, interface: Interface, params):
-        super().__init__(interface, params)
-        self._initial_sext = self.interface.get_value(channel_name='srmag/m-s/all/CorrectionStrengths')
-        self._initial_oct = self.interface.get_value(channel_name='srmag/m-o/all/CorrectionStrengths')
-        self._cur_0 = self.interface.get_value(channel_name='srdiag/beam-current/total/Current')
-    """
-
-    """ test assuminf self.interface exists.
-        self.initial_quad = self.interface.get_value(channel_name='srmag/m-q/all/CorrectionStrengths')
-        self.initial_sext = self.interface.get_value(channel_name='srmag/m-s/all/CorrectionStrengths')
-        self.initial_oct = self.interface.get_value(channel_name='srmag/m-o/all/CorrectionStrengths')
-    """
-
-    print(_cur_0)
 
     def get_variables(self, variable_names: list[str]) -> dict:
+
         if self.interface is None:
             raise BadgerNoInterfaceError
 
@@ -204,7 +154,7 @@ class Environment(environment.Environment):
 
                 mean_lifetime = mean(_LT)
                 observable_outputs[obs] = mean_lifetime
-            """
+
             elif obs == 'normalized_libera_lifetime':
                 _LT = []
                 for i in range(n_acq):
@@ -242,15 +192,8 @@ class Environment(environment.Environment):
 
                 mean_lifetime = mean(_LT)
                 observable_outputs[obs] = mean_lifetime
-                """
 
         return observable_outputs
-
-
-    # below old code
-
-    #    def _get_vrange(self, var):
-    #        return self.variables[var]
 
 
 if __name__ =='__main__':
