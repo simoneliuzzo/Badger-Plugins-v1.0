@@ -7,7 +7,6 @@ from itertools import compress
 from badger.errors import BadgerNoInterfaceError, BadgerEnvObsError
 from .NormalizeLifetime import normalize_lifetime
 
-
 class Knobs:
     def __init__(self, csv_file_name, name):
         self._matrix = self.load_knob_from_csv(csv_file_name)
@@ -59,7 +58,7 @@ class Environment(environment.Environment):
     waiting_time: int = 8
     number_of_acquisitions: int = 2
     seconds_between_acquisitions: int = 2
-
+    verbose: bool = False
 
     def get_variables(self, variable_names: list[str]) -> dict:
 
@@ -104,14 +103,18 @@ class Environment(environment.Environment):
         sext = np.sum(_x[0:sum(mask_sext_vars)] * np.transpose(
             self._knobs_sext.gen_matrix(list(compress(vars, mask_sext_vars)))), axis=1)
 
-        [print(f'sext knob {c}: {k}') for c, k in enumerate(_x[0:sum(mask_sext_vars)])]
+        if self.verbose:
+            [print(f'sext knob {c}: {k}') for c, k in enumerate(_x[0:sum(mask_sext_vars)])]
+
         self.interface.set_value(channel_name='srmag/m-s/all/CorrectionStrengths',
                                  channel_value=self._initial_sext + sext)
         # set octupoles
         oct = np.sum(_x[sum(mask_sext_vars):] * np.transpose(
             self._knobs_oct.gen_matrix(list(compress(vars, mask_oct_vars)))), axis=1)
 
-        [print(f'oct knob {c}: {k}') for c, k in enumerate(_x[sum(mask_sext_vars):])]
+        if self.verbose:
+            [print(f'oct knob {c}: {k}') for c, k in enumerate(_x[sum(mask_sext_vars):])]
+
         self.interface.set_value(channel_name='srmag/m-o/all/CorrectionStrengths',
                                  channel_value=self._initial_oct + oct)
 
