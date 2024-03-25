@@ -1,0 +1,7 @@
+__pycache__
+.DS_Store
+*.egg-info
+/__init__.py
+.tmp
+.idea
+.ipynb_checkpoints

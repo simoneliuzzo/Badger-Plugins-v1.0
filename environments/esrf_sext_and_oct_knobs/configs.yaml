@@ -1,0 +1,8 @@
+---
+name: esrf_sext_and_oct_knobs
+version: "0.1"
+dependencies:
+  - numpy
+  - badger-opt
+interface:
+  - tango

@@ -1,0 +1,9 @@
+---
+name: silly
+version: "0.1"
+dependencies:
+  - numpy
+  - badger-opt
+params:
+  start_from_current: True
+  max_iter: 42
